@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
+import Sidebar from './components/Sidebar';
+import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface AppProps {
+  toggleMode: () => void;
 }
 
-export default App
+export default function App({ toggleMode }: AppProps) {
+  return (
+    <Router>
+      <AppBar position="static">
+        <Toolbar>
+          <Sidebar />
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+             Dashboard
+          </Typography>
+          <IconButton color="inherit" onClick={toggleMode}>
+            <Brightness4Icon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
+  );
+}
